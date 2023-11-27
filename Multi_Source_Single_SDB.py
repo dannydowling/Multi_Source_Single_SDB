@@ -2,6 +2,7 @@ import os
 import shutil
 import sqlite3
 import time
+from typing import OrderedDict
 import commands
 import urllib
 import shutil
@@ -23,16 +24,20 @@ def connect_to_local_disk():
     mntlines = mount.split('\n')
     mntpoints = map(lambda line: line.split()[2], mntlines)
     for x in mntpoints:
-        if not os.path.ismount("/media/" + x):
-            os.system("mount /media/" + x)
-            check_connection_speed("/media/" + x)
-        pass
-    pass
+        x.speed = check_connection_speed(x)
+        x.orderby(x.speed)
+        pass  
+    return x
 
 # Function to check connection speed
-def check_connection_speed(connection_function):
+def check_connection_speed(connection_type, mount_location):
     start_time = time.time()
-    connection_function()
+    file = os.open(mount_location + "test_speed_file", os.O_RDWR|os.O_CREAT )
+    fo = os.fdopen(file, "w+")
+    fo.write("");
+    os.lseek(file, 0, 0)
+    os.read(file, 100)
+    fo.close()
     end_time = time.time()
     return end_time - start_time
 
