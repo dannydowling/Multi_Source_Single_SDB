@@ -60,7 +60,7 @@ def main():
         source_connection = connect_to_local_disk        
 
     try:
-        copy_files_and_update_database(source_connection(), /user/kodi/..., "external_database.sdb")
+        copy_files_and_update_database(source_connection(), "/user/kodi/...", "external_database.sdb")
         print("File copied successfully.")
     except Exception as e:
         print(f"Error: {e}")
